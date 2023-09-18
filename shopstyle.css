@@ -1,0 +1,13 @@
+.productBox
+{
+	margin: 5px;
+	border: 1px solid black;
+	padding: 5px;
+	overflow: auto;
+	background-color: #eeeeee;
+}
+
+.productBox img
+{
+	float:left;
+}
