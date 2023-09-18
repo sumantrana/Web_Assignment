@@ -5,7 +5,7 @@
                 <a href="Homepage.php" class="nav-item nav-link active">Home</a>
                 <a href="ProductList.php" class="nav-item nav-link">Products</a>
                 <a href="CustomerList.php" class="nav-item nav-link">Customers</a>
-                <a href="ViewOrderDetails.php" class="nav-item nav-link">Orders</a>
+                <a href="OrderList.php" class="nav-item nav-link">Orders</a>
             </div>
         </div>
     </div>

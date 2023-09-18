@@ -10,11 +10,10 @@
 	<?php
 		include('TopDiv.php');
 		include('NavBar.php');
+		include('functions.php');
 	?>	
 	<h1>Products List</h1>
 	<?php 
-		
-		include('functions.php');
 		
 		// if the user provided a search string.
 		if(isset($_GET['search']))
@@ -30,11 +29,6 @@
 		$safeSearchString = htmlspecialchars($searchString, ENT_QUOTES,"UTF-8"); //Task 8B
 		$SqlSearchString = "%$safeSearchString%"; //Task 8B
 
-		echo "<form>"; //Task 7
-		echo "<input name = 'search' type = 'text' value = '$safeSearchString' />"; //Task 8B
-		echo "<input type = 'submit'/>"; //Task 7
-		echo "</form>"; //Task 7
-		
 		//Task 9
 		if(isset($_GET['page']))
 		{
@@ -45,29 +39,13 @@
 			$currentPage = 0;
 		}
 				
-		// echo "<form>";
-		// echo "<input name = 'page' type = 'text' value = '$currentPage' />";
-		// echo "<input type = 'submit'/>";
-		// echo "</form>";
-	
-
-		
 		$nextPage =  $currentPage + 1; //Task 9A
-		// echo "<a href = 'ProductList.php?page=$nextPage&search=$safeSearchString'>Next Page</a>"; //Task 9B
-		// echo "<br/>";
 
 		$previousPage =  $currentPage - 1;
-		if ($previousPage >= 0)
-		// {
-		// 	echo "<a href = 'ProductList.php?page=$previousPage&search=$safeSearchString'> Previous Page</a> <br/>";
-		// }
 
 		// connect to the database using our function (and enable errors, etc)
 		$dbh = connectToDatabase();
 		
-		// select all the products.
-		//$statement = $dbh->prepare('SELECT * FROM Products LIMIT 10 OFFSET ? * 10;');
-
 		$statement = $dbh->prepare('SELECT COUNT(*) FROM Products  
 			WHERE Products.Description LIKE ?');
 
@@ -77,15 +55,30 @@
 	
 		echo "<nav>";
 		echo "<ul class='pagination justify-content-center'>";
-		  echo "<li class='page-item'><a class='page-link' href='ProductList.php?page=$previousPage&search=$safeSearchString'>Previous</a></li>";
+
+		if ($previousPage >= 0){
+			echo "<li class='page-item'><a class='page-link' href='ProductList.php?page=$previousPage&search=$safeSearchString'>Previous</a></li>";
+		} else {
+			echo "<li class='page-item disabled'><a class='page-link' href='ProductList.php?page=$previousPage&search=$safeSearchString'>Previous</a></li>";
+		}
 		 
 		  for ($items=0; $items < $count; $items +=10){
 			$currentPageCount = $items/10;
-			$currentPageCount += 1;
-		  	echo "<li class='page-item'><a class='page-link' href='ProductList.php?page=$currentPageCount&search=$safeSearchString'>$currentPageCount</a></li>";
+			$currentPageCount;
+			$displayPageCount = $currentPageCount + 1;
+		  	
+			if ($currentPage == $currentPageCount){
+				echo "<li class='page-item active'><a class='page-link' href='ProductList.php?page=$currentPageCount&search=$safeSearchString'>$displayPageCount</a></li>";
+			} else {
+				echo "<li class='page-item'><a class='page-link' href='ProductList.php?page=$currentPageCount&search=$safeSearchString'>$displayPageCount</a></li>";
+			}
 		  }
 		  
-		  echo "<li class='page-item'><a class='page-link' href='ProductList.php?page=$nextPage&search=$safeSearchString'>Next</a></li>";
+		  if (($currentPage + 1) * 10 < $count){
+		  	echo "<li class='page-item'><a class='page-link' href='ProductList.php?page=$nextPage&search=$safeSearchString'>Next</a></li>";
+		  } else {
+			echo "<li class='page-item disabled'><a class='page-link' href='ProductList.php?page=$nextPage&search=$safeSearchString'>Next</a></li>";
+		  }
 		echo "</ul>";
 	  	echo "</nav>";		
 
@@ -102,7 +95,7 @@
 		//execute the SQL.
 		$statement->execute();
 
-		echo "<div class='row row-cols-1 row-cols-md-5 g-4'>";
+		echo "<div class='row row-cols-1 row-cols-md-5 g-4 w-100'>";
 		// get the results
 		while($row = $statement->fetch(PDO::FETCH_ASSOC))
 		{
@@ -114,7 +107,6 @@
 			
 			echo "<div class='col'>";
 			echo "<div class='card h-100'>";
-			//echo "<div class='card h-100' style='width: 18rem;'>";
 			echo "<div class='card-header'>$ProductID</div>";
 			echo "<a href='./ViewProduct.php?ProductID=$ProductID'><img src='../IFU_Assets/ProductPictures/$ProductID.jpg' class='card-img-top' alt=''/></a>";
 			echo "<div class='card-body'>";
