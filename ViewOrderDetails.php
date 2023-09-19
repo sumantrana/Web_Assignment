@@ -99,6 +99,7 @@ if(isset($_GET['OrderID']))
 			$Description = makeOutputSafe($row2['Description']); 
 			$Price = makeOutputSafe($row2['Price']);
 			$BrandName = makeOutputSafe($row2['BrandName']);
+			$BrandID = makeOutputSafe($row2['BrandID']);
 
 			// TODO show the Products Description, Brand, Price, Picture of the Product and a picture of the Brand.
 			// TODO The product Picture must also be a link to ViewProduct.php.
@@ -111,7 +112,9 @@ if(isset($_GET['OrderID']))
 			// [Put Task 5A here]  
 			//echo "<img src = '../IFU_Assets/ProductPictures/$ProductID.jpg' alt ='' / >"; //Task 5A
 			//Task 10A
-			echo "<a href='./ViewProduct.php?ProductID=$ProductID'><img src='../IFU_Assets/ProductPictures/$ProductID.jpg' alt ='' /></a>  ";
+			
+			echo "<a href='./ViewProduct.php?ProductID=$ProductID'><img class='h-50' src='../IFU_Assets/ProductPictures/$ProductID.jpg' alt ='' /></a>  ";
+			echo "<img src='../IFU_Assets/BrandPictures/$BrandID.jpg' alt='BrandID'/> <br/>";
 			echo "$Description <br/>";
 			//echo "$Price <br/>";
 			echo "Brand: $BrandName <br/>";

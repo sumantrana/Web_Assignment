@@ -45,36 +45,56 @@
 				$BrandWebsite = htmlspecialchars($row['Website'], ENT_QUOTES, 'UTF-8'); 
 
 
-				echo "<div class='card bg-light border-dark mb-3 ms-5 me-5'>";
-				echo "<div class='card-body'>";
-				echo "<img src = '../IFU_Assets/ProductPictures/$productIDURL.jpg' style='width: 18rem;' alt= 'productID' /> <br/>";
-				echo "<p class='card-text'>$Description</p>";
-				echo "<p class='card-text'>Price: $Price</p>";
-				echo "<p class='card-text'>Brand: $BrandName</p>";
-				echo "<a href='$BrandWebsite'>Brand Home: <img class='card-img-bottom' style='width: 5rem;' src='../IFU_Assets/BrandPictures/$BrandID.jpg' alt='BrandID'/> <br/>";
+				// echo "<div class='card bg-light border-dark mb-3 ms-5 me-5'>";
+				// echo "<div class='card-body'>";
+				// echo "<img src = '../IFU_Assets/ProductPictures/$productIDURL.jpg' style='width: 18rem;' alt= 'productID' /> <br/>";
+				// echo "<p class='card-text'>$Description</p>";
+				// echo "<p class='card-text'>Price: $Price</p>";
+				// echo "<p class='card-text'>Brand: $BrandName</p>";
+				// echo "<a href='$BrandWebsite'>Brand Home: <img class='card-img-bottom' style='width: 5rem;' src='../IFU_Assets/BrandPictures/$BrandID.jpg' alt='BrandID'/> <br/>";
 
+				echo "<div class = 'productBox'>";	
+					echo "<div class = 'row'>";
+						echo "<div class = 'col col-1'>";	
+							echo "<div class = 'row'>";
+								echo "<img src = '../IFU_Assets/ProductPictures/$productIDURL.jpg' alt= 'productID' /> <br/>";
+							echo "</div>";
+							echo "<div class = 'row'>";
+								echo "<img class='thumbnail img-responsive' src = '../IFU_Assets/BrandPictures/$BrandID.jpg' alt='BrandID' /><br/>";
+							echo "</div>";
+						echo "</div>";
+						echo "<div class = 'col-10'>";
+							echo "$Description <br/>";
+							echo "Price: $Price <br/>";
+							echo "Brand: <a href='$BrandWebsite'>$BrandName</a> <br/>";
+						echo "</div>";
+					echo "</div>";	
+					echo "<div class = 'row'>";	
+						echo "<div class = 'col-4'>";		
 
-				if(isset($_COOKIE['ShoppingCart']) && $_COOKIE['ShoppingCart'] != "")
-				{
-					// TODO: Get the list of items in the shopping cart.
-					// and then check if product is already there.
-					//Done
-					$existingProducts = $_COOKIE['ShoppingCart'];
+						if(isset($_COOKIE['ShoppingCart']) && $_COOKIE['ShoppingCart'] != "")
+						{
+							// TODO: Get the list of items in the shopping cart.
+							// and then check if product is already there.
+							//Done
+							$existingProducts = $_COOKIE['ShoppingCart'];
 
-					if (str_contains($existingProducts, $ProductID) === false){
-						echo "<form action='AddToCart.php?ProductID=$ProductID' method='post'>";
-						echo "<button class='btn btn-primary' type='submit' name='BuyButton'>Add to Cart</button>";
-					  	echo "</form>";
-					}
-					
+							if (str_contains($existingProducts, $ProductID) === false){
+								echo "<form action='AddToCart.php?ProductID=$ProductID' method='post'>";
+								echo "<button class='btn btn-primary p-2 m-2' type='submit' name='BuyButton'>Add to Cart</button>";
+								echo "</form>";
+							}
+							
 
-				} else {
-					echo "<form action='AddToCart.php?ProductID=$ProductID' method='post'>";
-					echo "<button class='btn btn-primary' type='submit' name='BuyButton'>Add to Cart</button>";
-					echo "</form>";
-				}	
+						} else {
+							echo "<form action='AddToCart.php?ProductID=$ProductID' method='post'>";
+							echo "<button class='btn btn-primary' type='submit' name='BuyButton'>Add to Cart</button>";
+							echo "</form>";
+						}	
+
 				
-				echo "</div>";
+						echo "</div>";
+					echo "</div>";
 				echo "</div>";					
 				
 			}

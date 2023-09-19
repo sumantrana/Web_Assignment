@@ -83,9 +83,15 @@
 	  	echo "</nav>";		
 
 		
-		$statement = $dbh->prepare('SELECT * FROM Products  
-			WHERE Products.Description LIKE ? 
-			LIMIT 10 OFFSET ? * 10;');  //Task 9
+		$statement = $dbh->prepare('
+			SELECT Products.ProductID as ProductID, Description, Price, count(*)
+			FROM Products
+			INNER JOIN OrderProducts on OrderProducts.ProductID = Products.ProductID
+			WHERE Products.Description LIKE ?
+			Group BY OrderProducts.ProductID
+			Order by count(*) DESC
+			LIMIT 10 OFFSET ? * 10;
+		');  //Task 9
 
 		
 		$statement->bindValue(1,$SqlSearchString); //Task 7A
@@ -108,7 +114,7 @@
 			echo "<div class='col'>";
 			echo "<div class='card h-100'>";
 			echo "<div class='card-header'>$ProductID</div>";
-			echo "<a href='./ViewProduct.php?ProductID=$ProductID'><img src='../IFU_Assets/ProductPictures/$ProductID.jpg' class='card-img-top' alt=''/></a>";
+			echo "<div class='text-center'<a href='./ViewProduct.php?ProductID=$ProductID'><img class='h-70 w-50 ' src='../IFU_Assets/ProductPictures/$ProductID.jpg' class='card-img-top' alt=''/></a></div>";
 			echo "<div class='card-body'>";
 			echo "<p class='card-text'>$Description</p>";
 			echo "<p class='card-text'>$Price</p>";

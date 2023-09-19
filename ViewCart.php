@@ -12,12 +12,29 @@ $cookieMessage = getCookieMessage();
 	<meta charset="UTF-8" /> 
 	<title>Cart</title>
 	<link rel="stylesheet" type="text/css" href="shopstyle.css" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
 </head>
 <body>
 	<?php
+		include('TopDiv.php');
 		include('NavBar.php');
 	?>		
 	<?php
+
+	if ($cookieMessage){
+		// if we have any error messages echo them now. 
+		//TODO style this message so that it is noticeable.
+		if ( str_contains($cookieMessage, "Success") ){
+			echo "<div class='alert alert-success' role='alert'>";
+			echo "$cookieMessage";
+			echo "</div>";
+		} else {
+			echo "<div class='alert alert-danger' role='alert'>";
+			echo "$cookieMessage";
+			echo "</div>";
+		}
+	}
 
 	// does the user have items in the shopping cart?
 	if(isset($_COOKIE['ShoppingCart']) && $_COOKIE['ShoppingCart'] != '')
@@ -56,17 +73,31 @@ $cookieMessage = getCookieMessage();
 				$Description = htmlspecialchars($row['Description'], ENT_QUOTES, 'UTF-8'); 
 				$BrandName = htmlspecialchars($row['BrandName'], ENT_QUOTES, 'UTF-8'); 
 				$BrandID = htmlspecialchars($row['BrandID'], ENT_QUOTES, 'UTF-8'); 
+				$BrandWebsite = htmlspecialchars($row['Website'], ENT_QUOTES, 'UTF-8');
 
 				echo "<div class = 'productBox'>";	
+				echo "<div class = 'row'>";
+				echo "<div class = 'col col-1'>";	
+				echo "<div class = 'row'>";
+				echo "<img src = '../IFU_Assets/ProductPictures/$productID.jpg' alt= 'productID' /> <br/>";
+				echo "</div>";
+				echo "<div class = 'row'>";
+				echo "<img class='thumbnail img-responsive' src = '../IFU_Assets/BrandPictures/$BrandID.jpg' alt='BrandID' /><br/>";
+				echo "</div>";
+				echo "</div>";
+				echo "<div class = 'col-10'>";
 				echo "$Description <br/>";
-				echo "$Price <br/>";
-				echo "$BrandName <br/>";
-				echo "<img src = '../IFU_Assets/ProductPictures/$productIDURL.jpg' alt= 'productID' /> <br/>";
+				echo "Price: $Price <br/>";
+				echo "Brand: <a href='$BrandWebsite'>$BrandName</a> <br/>";
+				echo "</div>";
+				echo "</div>";
+				
 				//echo "<br>";
-				echo "<img src = '../IFU_Assets/BrandPictures/$BrandID.jpg' alt='BrandID' /><br/>";
+				
 				echo "</div> \n";				
 
 				//TODO add the price of this item to the $totalPrice
+				
 				$totalPrice += $Price;
 
 			}
@@ -74,44 +105,56 @@ $cookieMessage = getCookieMessage();
 
 		// TODO: output the $totalPrice.
 		//Done
-		echo "<div> \n";
+		echo "<div class = 'text-end fs-4 fw-bold pe-3'> \n";
 		echo "Total Price: $totalPrice";
 		echo "</div> \n";
 		
-		// if we have any error messages echo them now. 
-		//TODO style this message so that it is noticeable.
-		echo "$cookieMessage";
 		
 		// you are allowed to stop and start the PHP tags so you don't need to use lots of echo statements.
 		?>
-			<form action = 'ProcessOrder.php' method = 'POST'>
-			
-				<!-- TODO put a text input here so the user can type in their UserName.
-					 this input tag MUST have its name attribute set to 'UserName' -->
-				<!-- Done -->
-				<!-- TODO put a submit button so the user can submit the form -->
-				<!-- Done -->
-				<fieldset>
-					<legend>Confirm Order</legend>
-					<label for="username">User Name: </label>
-					<input type="text" name="UserName" id="username" placeholder="User Name" required></input><br/>
-					<input type="Submit" value = 'Confirm Order'/>
-				</fieldset>
+				<div class = 'row'>
+				<div class = 'col col-10'>	
+				<form action = 'ProcessOrder.php' method = 'POST'>
+				
+					<!-- TODO put a text input here so the user can type in their UserName.
+						this input tag MUST have its name attribute set to 'UserName' -->
+					<!-- Done -->
+					<!-- TODO put a submit button so the user can submit the form -->
+					<!-- Done -->
+					<fieldset>
+					<div class = 'row border'>
+						<legend>Confirm Order</legend>
+						<div class = 'col col-1'>
+							<label for="username">User Name: </label>
+						</div>
+						<div class = 'col col-2'>
+							<input type="text" name="UserName" id="username" placeholder="User Name" required></input><br/>
+						</div>
+						<div class = 'col col-3'>
+							<input type="Submit" value = 'Confirm Order'/>
+						</div>
+					</div>	
+					</fieldset>
 
-				 
-			</form>
-			
-			<form action = 'EmptyCart.php' method = 'POST'>
-			<input type = 'submit' name = 'EmptyCart' value = 'Empty Shopping Cart' id = 'EmptyCart' />
-			</form>
+					
+				</form>
+				</div>
+				<div class = 'col'>
+				<form action = 'EmptyCart.php' method = 'POST'>
+					<div class = 'col'>	
+						<br/>
+						<br/>
+						<input type = 'submit' name = 'EmptyCart' value = 'Empty Shopping Cart' id = 'EmptyCart' />
+					</div>
+				</form>
+				</div>
+				</div>	
+			</div>
 		<?php 		
 	}
 	else
 	{
-		// if we have any error messages echo them now. TODO style this message so that it is noticeable.
-		echo "$cookieMessage <br/>";
-		
-		echo "You Have no items in your cart!";
+		echo "<h2>You Have no items in your cart!</h2>";
 	}
 	?>
 </body>
