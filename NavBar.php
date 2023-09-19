@@ -6,6 +6,7 @@
                 <a href="ProductList.php" class="nav-item nav-link">Products</a>
                 <a href="CustomerList.php" class="nav-item nav-link">Customers</a>
                 <a href="OrderList.php" class="nav-item nav-link">Orders</a>
+                <a href="Report.php" class="nav-item nav-link">Report</a>
             </div>
         </div>
     </div>
