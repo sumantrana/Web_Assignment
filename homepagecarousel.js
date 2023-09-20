@@ -64,5 +64,9 @@ $(document).ready(function () {
         $(recentlyBoughtProductsCarousel).addClass("slide");
       }
 
+      function selectSort(item) {
+        const sortDropDown = document.getElementById('sortProductsDropDown')
+        sortDropDown.innerHTML = item.innerHTML
+      }      
 
 });
